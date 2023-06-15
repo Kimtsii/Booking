@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FCP Booking System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-column {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-row {
+      margin-bottom: 10px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .details-column {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    select[name="package"] {
+      padding: 5px;
+    }
+
+    .result-container {
+      margin-top: 10px;
+    }
+
+    .result-label {
+      margin-right: 10px;
+    }
+
+    .estimate-button {
+      margin-top: 10px;
+    }
+
+    .book-now-button {
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+  background-color: black;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 5px;
+  color: white; /* Set text color to white for better visibility */
+}
+
+
+    .close {
+      color: #888;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    @media (min-width: 600px) {
+      .form-container {
+        flex-direction: row;
+        gap: 20px;
+      }
+
+      .form-column {
+        flex-basis: 50%;
+        padding: 0;
+      }
+
+      .details-column {
+        flex-basis: 50%;
+        padding: 0;
+      }
+
+      .result-container {
+        align-items: center;
+      }
+
+
+    }
+  </style>
+</head>
+<body>
+  <h1>FCP Booking System</h1>
+
+  <div class="form-container">
+    <div class="form-column">
+      <h2>Select a Package:</h2>
+      <form id="bookingForm" onsubmit="return false;">
+        <div class="form-row">
+          <select name="package" onchange="showPackageDetails(this.value)">
+            <option value="backpackers">Backpackers Special</option>
+            <option value="deluxe">Deluxe Accommodation</option>
+            <option value="villa">Villa Accommodation</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="stayDuration">Number of days:</label>
+          <input class="form-input" type="number" name="stayDuration" id="stayDuration" min="1" required>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="numPeople">Number of People:</label>
+          <input class="form-input" type="number" name="numPeople" id="numPeople" min="1" required>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="numChild">Additional child (4-12 years old):</label>
+          <input class="form-input" type="number" name="numChild" id="numChild" min="0">
+        </div>
+
+        <button class="estimate-button" onclick="showEstimateCost()">View Estimate Cost</button>
+        <div class="result-container">
+          <span class="result-label">Total Price:</span>
+          <span id="totalPrice"></span>
+        </div>
+        <button class="book-now-button" onclick="showConfirmationModal()">Book Now</button>
+      </form>
+    </div>
+
+    <div class="details-column">
+      <h2>Package Details:</h2>
+      <div id="packageDetails"></div>
+    </div>
+  </div>
+
+  <!-- Modal for Confirmation -->
+<!-- Modal for Confirmation -->
+<!-- Modal for Confirmation -->
+<!-- Modal for Confirmation -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeConfirmationModal()">&times;</span>
+      <h2>Confirmation</h2>
+      
+      <div class="form-row">
+
+        <label class="form-label" for="firstName">First Name:</label>
+        <input class="form-input" type="text" name="firstName" id="firstName" required>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="lastName">Last Name:</label>
+        <input class="form-input" type="text" name="lastName" id="lastName" required>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="email">Email:</label>
+        <input class="form-input" type="email" name="email" id="email" required>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="message">Message:</label>
+        <textarea class="form-input" name="message" id="message" rows="4" required></textarea>
+      </div>
+      <!-- Hidden input fields to store user inputs -->
+      <input type="hidden" id="confirmPackage" name="confirmPackage">
+      <input type="hidden" id="confirmStayDuration" name="confirmStayDuration">
+      <input type="hidden" id="confirmNumPeople" name="confirmNumPeople">
+      <input type="hidden" id="confirmNumChild" name="confirmNumChild">
+      <input type="hidden" id="confirmTotalPrice" name="confirmTotalPrice">
+      <button class="confirm-button" onclick="confirmBooking()">Confirm</button>
+    </div>
+  </div>
+  
+
+  <script>
+    function showPackageDetails(package) {
+      var detailsElement = document.getElementById('packageDetails');
+
+      // Clear previous details
+      detailsElement.innerHTML = '';
+
+      // Update details based on the selected package
+      if (package === 'backpackers') {
+        detailsElement.innerHTML = 'Backpackers Special Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      } else if (package === 'deluxe') {
+        detailsElement.innerHTML = 'Deluxe Accommodation Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      } else if (package === 'villa') {
+        detailsElement.innerHTML = 'Villa Accommodation Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      }
+    }
+
+    function showEstimateCost() {
+      var package = document.getElementById('bookingForm').elements['package'].value;
+      var stayDuration = parseInt(document.getElementById('stayDuration').value);
+      var numPeople = parseInt(document.getElementById('numPeople').value);
+      var numChild = parseInt(document.getElementById('numChild').value);
+      var basePrice = 2000;
+      var childPrice = 600;
+      var totalPrice = basePrice * stayDuration * numPeople;
+
+      if (!isNaN(numChild) && numChild > 0) {
+        totalPrice += childPrice * stayDuration * numChild;
+      }
+
+      var totalPriceElement = document.getElementById('totalPrice');
+
+      if (package === 'backpackers') {
+        totalPriceElement.textContent = 'Php ' + totalPrice;
+      } else if (package === 'deluxe' || package === 'villa') {
+        totalPriceElement.textContent = 'Php ' + totalPrice + ' (based on selected package)';
+      }
+    }
+
+    function showConfirmationModal() {
+  var package = document.getElementById('bookingForm').elements['package'].value;
+  var stayDuration = document.getElementById('stayDuration').value;
+  var numPeople = document.getElementById('numPeople').value;
+  var numChild = document.getElementById('numChild').value;
+  var totalPrice = document.getElementById('totalPrice').textContent;
+
+  // Assign user inputs to hidden input fields
+  document.getElementById('confirmPackage').value = package;
+  document.getElementById('confirmStayDuration').value = stayDuration;
+  document.getElementById('confirmNumPeople').value = numPeople;
+  document.getElementById('confirmNumChild').value = numChild;
+  document.getElementById('confirmTotalPrice').value = totalPrice;
+
+  openConfirmationModal();
+}
+
+
+    function openConfirmationModal() {
+  var modal = document.getElementById('confirmationModal');
+  modal.style.display = 'block';
+}
+
+function closeConfirmationModal() {
+  var modal = document.getElementById('confirmationModal');
+  modal.style.display = 'none';
+}
+
+function sendBookingInfoToAirtable(firstName, lastName, email, message) {
+  var apiKey = 'keyNCbwDkhsx0aaJm';
+  var baseId = 'appKMSPBkiIwwl3Gl';
+  var tableName = 'FCP Booking';
+
+  var url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
+  var headers = {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  };
+
+  var package = document.getElementById('confirmPackage').value;
+  var stayDuration = document.getElementById('confirmStayDuration').value;
+  var numPeople = document.getElementById('confirmNumPeople').value;
+  var numChild = document.getElementById('confirmNumChild').value;
+  var totalPrice = document.getElementById('confirmTotalPrice').value;
+
+  var data = {
+    "fields": {
+      "First Name": firstName,
+      "Last Name": lastName,
+      "Email": email,
+      "Message": message,
+      "Package": package,
+      "Stay Duration": stayDuration,
+      "Number of People": numPeople,
+      "Additional Child": numChild,
+      "Total Price": totalPrice
+    }
+  };
+
+  fetch(url, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('An error occurred while sending booking information to Airtable');
+    }
+    console.log('Booking information sent to Airtable successfully');
+    alert('Booking confirmed!');
+    closeConfirmationModal();
+    document.getElementById('bookingForm').reset();
+  })
+  .catch(error => {
+    console.error('An error occurred while sending booking information to Airtable:', error);
+    alert('An error occurred while sending booking information to Airtable');
+  });
+}
+
+
+// Rest of your code...
+
+function confirmBooking() {
+  var firstName = document.getElementById('firstName').value;
+  var lastName = document.getElementById('lastName').value;
+  var email = document.getElementById('email').value;
+  var message = document.getElementById('message').value;
+
+  sendBookingInfoToAirtable(firstName, lastName, email, message);
+}
+
+
+    
+  </script>
+  
+</body>
+</html>
