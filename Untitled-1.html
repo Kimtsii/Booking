@@ -151,19 +151,30 @@
       <form id="bookingForm" onsubmit="return false;">
         <div class="form-row">
           <select name="package" onchange="showPackageDetails(this.value)">
-            <option value="backpackers">Backpackers Special</option>
-            <option value="deluxe">Deluxe Accommodation</option>
-            <option value="villa">Villa Accommodation</option>
+            <option value="All-Inclusive Fitness Package">All-Inclusive Fitness Package</option>
+            <option value="All-Inclusive Weight Loss Package">All-Inclusive Weight Loss Package</option>
+            <option value="All-Inclusive Training Package">All-Inclusive Training Package</option>
           </select>
         </div>
 
         <div class="form-row">
-          <label class="form-label" for="stayDuration">Number of days:</label>
+            <label class="form-label" for="roomType">Room Type:</label>
+            <select name="roomType" id="roomType" required>
+              <option value="">Select Room Type</option>
+              <option value="Deluxe Duplex">Deluxe Duplex</option>
+              <option value="Executive Villa">Executive Villa</option>
+            </select>
+          </div>
+          
+
+        
+        <div class="form-row">
+          <label class="form-label" for="stayDuration">Number of Weeks:</label>
           <input class="form-input" type="number" name="stayDuration" id="stayDuration" min="1" required>
         </div>
 
         <div class="form-row">
-          <label class="form-label" for="numPeople">Number of People:</label>
+          <label class="form-label" for="numPeople">Additional Person:</label>
           <input class="form-input" type="number" name="numPeople" id="numPeople" min="1" required>
         </div>
 
@@ -171,6 +182,17 @@
           <label class="form-label" for="numChild">Additional child (4-12 years old):</label>
           <input class="form-input" type="number" name="numChild" id="numChild" min="0">
         </div>
+
+
+        <div class="form-row">
+            <label class="form-label" for="checkInDate">Check-In Date:</label>
+            <input class="form-input" type="date" name="checkInDate" id="checkInDate" required>
+          </div>
+  
+          <div class="form-row">
+            <label class="form-label" for="checkOutDate">Check-Out Date:</label>
+            <input class="form-input" type="date" name="checkOutDate" id="checkOutDate" required>
+          </div>
 
         <button class="estimate-button" onclick="showEstimateCost()">View Estimate Cost</button>
         <div class="result-container">
@@ -195,12 +217,52 @@
     <div class="modal-content">
       <span class="close" onclick="closeConfirmationModal()">&times;</span>
       <h2>Confirmation</h2>
+
+     
+      
+
+      <div class="form-row">
+        <label class="form-label" for="package">Selected Package   : <span id="confirmPackage"></span></label>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="roomType">Selected Room   : <span id="confirmRoomType"></span></label>
+      </div>
+
+
+      <div class="form-row">
+        <label class="form-label" for="stayDuration">Number of Weeks: <span id="confirmStayDuration"></span></label>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="checkInDate">Check-In Date: <span id="confirmCheckInDate"></span></label>
+      </div>
+  
+      <div class="form-row">
+        <label class="form-label" for="checkOutDate">Check-Out Date:      <span id="confirmCheckOutDate"> </span></label>
+      </div>
+
+
+      <div class="form-row">
+        <label class="form-label" for="numPeople">Additional Person: <span id="confirmNumPeople"></span></label>
+      </div>
+
       
       <div class="form-row">
-
-        <label class="form-label" for="firstName">First Name:</label>
-        <input class="form-input" type="text" name="firstName" id="firstName" required>
+        <label class="form-label" for="numChild">Additional Child: <span id="confirmNumChild"></span></label>
       </div>
+
+      
+      <div class="form-row">
+        <label class="form-label" for="estimateCost">Estimated Cost:  <span id="confirmEstimateCost"></span></label>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="firstName">First Name:  <input class="form-input" type="text" name="firstName" id="firstName" required></label>
+       
+      </div>
+
+
 
       <div class="form-row">
         <label class="form-label" for="lastName">Last Name:</label>
@@ -214,14 +276,18 @@
         <label class="form-label" for="message">Message:</label>
         <textarea class="form-input" name="message" id="message" rows="4" required></textarea>
       </div>
+
+      
       <!-- Hidden input fields to store user inputs -->
       <input type="hidden" id="confirmPackage" name="confirmPackage">
       <input type="hidden" id="confirmStayDuration" name="confirmStayDuration">
       <input type="hidden" id="confirmNumPeople" name="confirmNumPeople">
       <input type="hidden" id="confirmNumChild" name="confirmNumChild">
+      <input type="hidden" id="confirmCheckInDate" name="confirmCheckInDate">
+      <input type="hidden" id="confirmCheckOutDate" name="confirmCheckOutDate">
       <input type="hidden" id="confirmTotalPrice" name="confirmTotalPrice">
       <button class="confirm-button" onclick="confirmBooking()">Confirm</button>
-    </div>
+    </div>  
   </div>
   
 
@@ -233,12 +299,25 @@
       detailsElement.innerHTML = '';
 
       // Update details based on the selected package
-      if (package === 'backpackers') {
-        detailsElement.innerHTML = 'Backpackers Special Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-      } else if (package === 'deluxe') {
-        detailsElement.innerHTML = 'Deluxe Accommodation Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-      } else if (package === 'villa') {
-        detailsElement.innerHTML = 'Villa Accommodation Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      if (package === 'All-Inclusive Fitness Package') {
+        detailsElement.innerHTML = '<ul>' +
+            '<li>Fitnes: Fitness Package</li>'+
+            '<li>Fitnes: Fitness Package</li>'+
+            '<li>Fitnes: Fitness Package</li>'+
+            '</ul>';
+
+      } else if (package === 'All-Inclusive Weight Loss Package') {
+        detailsElement.innerHTML = '<ul>' +
+            '<li>Weight loss Package</li>'+
+            '<li> Weight loss Package</li>'+
+            '<li>Weight loss Package</li>'+
+            '</ul>';
+      } else if (package === 'All-Inclusive Training Package') {
+        detailsElement.innerHTML = '<ul>' +
+            '<li> Training Package</li>'+
+            '<li> Training Package</li>'+
+            '<li> Training Package</li>'+
+            '</ul>';
       }
     }
 
@@ -257,28 +336,54 @@
 
       var totalPriceElement = document.getElementById('totalPrice');
 
-      if (package === 'backpackers') {
+      if (package === 'All-Inclusive Fitness Package') {
         totalPriceElement.textContent = 'Php ' + totalPrice;
-      } else if (package === 'deluxe' || package === 'villa') {
+      } else if (package === 'All-Inclusive Weight Loss Package' || package === 'All-Inclusive Training Package') {
         totalPriceElement.textContent = 'Php ' + totalPrice + ' (based on selected package)';
       }
     }
-
     function showConfirmationModal() {
   var package = document.getElementById('bookingForm').elements['package'].value;
+  //var package = document.getElementById('bookingForm').elements['roomType'].value;
   var stayDuration = document.getElementById('stayDuration').value;
   var numPeople = document.getElementById('numPeople').value;
   var numChild = document.getElementById('numChild').value;
+  var checkInDate = document.getElementById('checkInDate').value;
+  var checkOutDate = document.getElementById('checkOutDate').value;
   var totalPrice = document.getElementById('totalPrice').textContent;
+ // var roomType = document.getElementById('package').textContent;
+ var roomType = document.getElementById('roomType').value;
+document.getElementById('confirmRoomType').textContent = roomType;
 
-  // Assign user inputs to hidden input fields
-  document.getElementById('confirmPackage').value = package;
-  document.getElementById('confirmStayDuration').value = stayDuration;
-  document.getElementById('confirmNumPeople').value = numPeople;
-  document.getElementById('confirmNumChild').value = numChild;
-  document.getElementById('confirmTotalPrice').value = totalPrice;
+
+  // Assign user inputs to confirmation modal elements
+  document.getElementById('confirmPackage').textContent = package;
+  document.getElementById('confirmStayDuration').textContent = stayDuration;
+  document.getElementById('confirmNumPeople').textContent = numPeople;
+  document.getElementById('confirmNumChild').textContent = numChild;
+  document.getElementById('confirmCheckInDate').textContent = checkInDate;
+  document.getElementById('confirmCheckOutDate').textContent = checkOutDate;
+  document.getElementById('confirmTotalPrice').textContent = totalPrice;
+  //document.getElementById('confirmRoomType').textContent = roomType;
+
+  // Calculate and display the estimated cost
+  var estimateCost = calculateEstimateCost(package, stayDuration, numPeople, numChild);
+  document.getElementById('confirmEstimateCost').textContent = estimateCost;
 
   openConfirmationModal();
+}
+
+
+function calculateEstimateCost(package, stayDuration, numPeople, numChild) {
+  var basePrice = 2000;
+  var childPrice = 600;
+  var totalPrice = basePrice * stayDuration * numPeople;
+
+  if (!isNaN(numChild) && numChild > 0) {
+    totalPrice += childPrice * stayDuration * numChild;
+  }
+
+  return 'Php ' + totalPrice;
 }
 
 
@@ -303,57 +408,89 @@ function sendBookingInfoToAirtable(firstName, lastName, email, message) {
     'Content-Type': 'application/json'
   };
 
-  var package = document.getElementById('confirmPackage').value;
-  var stayDuration = document.getElementById('confirmStayDuration').value;
-  var numPeople = document.getElementById('confirmNumPeople').value;
-  var numChild = document.getElementById('confirmNumChild').value;
-  var totalPrice = document.getElementById('confirmTotalPrice').value;
+ 
+  var package = document.getElementById('confirmPackage').textContent;
+      var stayDuration = document.getElementById('confirmStayDuration').textContent;
+      var numPeople = document.getElementById('confirmNumPeople').textContent;
+      var numChild = document.getElementById('confirmNumChild').textContent;
+      var totalPrice = document.getElementById('confirmTotalPrice').textContent;
+      var checkInDate = document.getElementById('confirmCheckInDate').textContent;
+      var checkOutDate = document.getElementById('confirmCheckOutDate').textContent;
+      var roomType = document.getElementById('confirmRoomType').textContent;
 
-  var data = {
-    "fields": {
-      "First Name": firstName,
-      "Last Name": lastName,
-      "Email": email,
-      "Message": message,
-      "Package": package,
-      "Stay Duration": stayDuration,
-      "Number of People": numPeople,
-      "Additional Child": numChild,
-      "Total Price": totalPrice
+      var data = {
+        "fields": {
+          "First-Name": firstName,
+          "Last Name": lastName,
+          "Email": email,
+          "Message": message,
+          "Package": package,
+          "Number of Weeks": stayDuration,
+          "Additional Adult": numPeople,
+          "Additional Child": numChild,
+          "Total Price": totalPrice,
+          "Check-In Date": checkInDate,
+          "Check-Out Date": checkOutDate,
+          "Room Type": roomType
+        }
+      };
+
+      fetch(url, {  
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          console.log('Booking information sent to Airtable:', result);
+          // Show a success message to the user or perform any other desired action
+        })
+        .catch(error => {
+          console.error('Error sending booking information to Airtable:', error);
+          // Show an error message to the user or perform any other desired action
+        });
     }
-  };
 
-  fetch(url, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(data)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('An error occurred while sending booking information to Airtable');
+    function confirmBooking() {
+      var firstName = document.getElementById('firstName').value;
+      var lastName = document.getElementById('lastName').value;
+      var email = document.getElementById('email').value;
+      var message = document.getElementById('message').value;
+      var missingFields = [];
+      var emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+
+  
+      if (firstName === '') {
+      missingFields.push('First Name');
     }
-    console.log('Booking information sent to Airtable successfully');
-    alert('Booking confirmed!');
-    closeConfirmationModal();
-    document.getElementById('bookingForm').reset();
-  })
-  .catch(error => {
-    console.error('An error occurred while sending booking information to Airtable:', error);
-    alert('An error occurred while sending booking information to Airtable');
-  });
-}
 
+    if (lastName === '') {
+      missingFields.push('Last Name');
+    }
 
-// Rest of your code...
+  
 
-function confirmBooking() {
-  var firstName = document.getElementById('firstName').value;
-  var lastName = document.getElementById('lastName').value;
-  var email = document.getElementById('email').value;
-  var message = document.getElementById('message').value;
+    if (missingFields.length > 0) {
+      var message = 'Please fill in the following required fields:\n';
+      for (var i = 0; i < missingFields.length; i++) {
+        message += '- ' + missingFields[i] + '\n';
+      }
+      alert(message);
+      return;
+    }
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
 
-  sendBookingInfoToAirtable(firstName, lastName, email, message);
-}
+      sendBookingInfoToAirtable(firstName, lastName, email, message);
+
+      // Close the confirmation modal or perform any other desired action
+      closeConfirmationModal();
+
+// Show a pop-up window with the success message
+window.alert('Reservation was successful');
+    }
 
 
     
