@@ -2,7 +2,8 @@
 <html>
 <head>
   <title>FCP Booking System</title>
-  <style>
+
+ <style>
     * {
       box-sizing: border-box;
     }
@@ -69,14 +70,16 @@
     }
 
     .book-now-button {
-      margin-top: 10px;
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 3px;
-      cursor: pointer;
-    }
+  margin-top: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto; /* Center the button horizontally */
+}
 
     /* Modal styles */
     .modal {
@@ -87,7 +90,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      overflow: auto;
+      overflow: auto; 
       background-color: rgba(0, 0, 0, 0.4);
     }
 
@@ -96,7 +99,7 @@
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 100%;
   max-width: 600px;
   border-radius: 5px;
   color: white; /* Set text color to white for better visibility */
@@ -138,6 +141,23 @@
         align-items: center;
       }
 
+      .button-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  
+}
+
+.button-group input[type="text"] {
+  margin-right: 10px;
+}
+
 
     }
   </style>
@@ -150,57 +170,70 @@
       <h2>Select a Package:</h2>
       <form id="bookingForm" onsubmit="return false;">
         <div class="form-row">
-          <select name="package" onchange="showPackageDetails(this.value)">
-            <option value="All-Inclusive Fitness Package">All-Inclusive Fitness Package</option>
-            <option value="All-Inclusive Weight Loss Package">All-Inclusive Weight Loss Package</option>
-            <option value="All-Inclusive Training Package">All-Inclusive Training Package</option>
-          </select>
+        <select id="package" class="form-label" onchange="updatePackageDetails()" required>
+            <option value="" selected disabled>Select a Package</option>
+             <option value="accommodations">Accommodations Only</option>
+            <option value="backpackers">Backpacker Special</option>
+            <option value="Bootcamp">Bootcamp</option>
+            <option value="Digital Nomads">Digital Nomads Special</option>
+          <option value="All Inclusive Weight-Loss Package">All Inclusive Weight-Loss Package</option>
+          <option value="All Inclusive Training Package">All Inclusive Training Package</option>
+          <!--  <option value="All Inclusive Fitness Package">All Inclusive Fitness Package</option>  -->
+        </select>
+      </div>
+     
+        <select id="roomType" class="form-label" onchange="updatePackageDetails()" required>
+          <option value="" selected disabled>Select a room type</option>
+          <option value="Deluxe Room">Deluxe Room</option>
+          <option value="Executive Villa">Executive Villa</option>
+        </select>
+        <div class="form-row">
+          <label class="form-label" for="checkInDate">Check-In Date:</label>
+          <input class="form-input" type="date" name="checkInDate" id="checkInDate" required>
         </div>
 
         <div class="form-row">
-            <label class="form-label" for="roomType">Room Type:</label>
-            <select name="roomType" id="roomType" required>
-              <option value="">Select Room Type</option>
-              <option value="Deluxe Duplex">Deluxe Duplex</option>
-              <option value="Executive Villa">Executive Villa</option>
-            </select>
-          </div>
-          
-
-        
-        <div class="form-row">
-          <label class="form-label" for="stayDuration">Number of Weeks:</label>
-          <input class="form-input" type="number" name="stayDuration" id="stayDuration" min="1" required>
+          <label class="form-label" for="checkOutDate">Check-Out Date:</label>
+          <input class="form-input" type="date" name="checkOutDate" id="checkOutDate" required>
         </div>
+
 
         <div class="form-row">
           <label class="form-label" for="numPeople">Additional Person:</label>
-          <input class="form-input" type="number" name="numPeople" id="numPeople" min="1" required>
+          <input class="form-input" type="number" name="numPeople" id="numPeople" min="0" value="0">
         </div>
 
         <div class="form-row">
           <label class="form-label" for="numChild">Additional child (4-12 years old):</label>
-          <input class="form-input" type="number" name="numChild" id="numChild" min="0">
+          <input class="form-input" type="number" name="numChild" id="numChild" min="0" value="0">
         </div>
 
 
-        <div class="form-row">
-            <label class="form-label" for="checkInDate">Check-In Date:</label>
-            <input class="form-input" type="date" name="checkInDate" id="checkInDate" required>
-          </div>
-  
-          <div class="form-row">
-            <label class="form-label" for="checkOutDate">Check-Out Date:</label>
-            <input class="form-input" type="date" name="checkOutDate" id="checkOutDate" required>
-          </div>
+    
+        <br> <button  type="button" class="form-label" onclick="resetForm()">Reset Values</button><br>
 
-        <button class="estimate-button" onclick="showEstimateCost()">View Estimate Cost</button>
-        <div class="result-container">
-          <span class="result-label">Total Price:</span>
-          <span id="totalPrice"></span>
-        </div>
-        <button class="book-now-button" onclick="showConfirmationModal()">Book Now</button>
+      
+
+
+       
+       <button class="form-label" onclick="calculateNumberOfDays()">View Estimate Cost</button>
+       <div class="result-container">
+        <span class="result-label">Number of Days: </span><span id="num-of-days"></span> <br>
+        <span class="result-label">Total Price: </span><span id="total-price"></span> <br>
+        <span class="result-label">Price per Day: </span><span id="pricePerDay"></span> <br>
+
+       </div>
+
+
+
+
       </form>
+      <div class="button-group">
+        <input type="text" id="promo-code-input" placeholder="Promo Code">
+        <button  onclick="openModal()">Reserve Now!</button>
+      </div>
+    
+
     </div>
 
     <div class="details-column">
@@ -209,17 +242,12 @@
     </div>
   </div>
 
-  <!-- Modal for Confirmation -->
-<!-- Modal for Confirmation -->
-<!-- Modal for Confirmation -->
-<!-- Modal for Confirmation -->
+ 
 <div id="confirmationModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeConfirmationModal()">&times;</span>
       <h2>Confirmation</h2>
 
-     
-      
 
       <div class="form-row">
         <label class="form-label" for="package">Selected Package   : <span id="confirmPackage"></span></label>
@@ -229,10 +257,6 @@
         <label class="form-label" for="roomType">Selected Room   : <span id="confirmRoomType"></span></label>
       </div>
 
-
-      <div class="form-row">
-        <label class="form-label" for="stayDuration">Number of Weeks: <span id="confirmStayDuration"></span></label>
-      </div>
 
       <div class="form-row">
         <label class="form-label" for="checkInDate">Check-In Date: <span id="confirmCheckInDate"></span></label>
@@ -254,7 +278,12 @@
 
       
       <div class="form-row">
-        <label class="form-label" for="estimateCost">Estimated Cost:  <span id="confirmEstimateCost"></span></label>
+        <label class="form-label" for="totalPrice">Estimated Cost:  <span id="confirmTotalPrice"></span></label>
+      </div>
+
+       
+      <div class="form-row">
+        <label class="form-label" for="promo-code-input">Promo code:  <span id="confirmPromoCode"></span></label>
       </div>
 
       <div class="form-row">
@@ -286,104 +315,480 @@
       <input type="hidden" id="confirmCheckInDate" name="confirmCheckInDate">
       <input type="hidden" id="confirmCheckOutDate" name="confirmCheckOutDate">
       <input type="hidden" id="confirmTotalPrice" name="confirmTotalPrice">
-      <button class="confirm-button" onclick="confirmBooking()">Confirm</button>
+      <button class="confirm-button" onclick="confirmBooking()">Confirm Reservation</button>
     </div>  
   </div>
   
 
   <script>
-    function showPackageDetails(package) {
-      var detailsElement = document.getElementById('packageDetails');
+  
+  const package1 = document.getElementById('package');
+    const roomType1 = document.getElementById('roomType');
 
-      // Clear previous details
-      detailsElement.innerHTML = '';
-
-      // Update details based on the selected package
-      if (package === 'All-Inclusive Fitness Package') {
-        detailsElement.innerHTML = '<ul>' +
-            '<li>Fitnes: Fitness Package</li>'+
-            '<li>Fitnes: Fitness Package</li>'+
-            '<li>Fitnes: Fitness Package</li>'+
-            '</ul>';
-
-      } else if (package === 'All-Inclusive Weight Loss Package') {
-        detailsElement.innerHTML = '<ul>' +
-            '<li>Weight loss Package</li>'+
-            '<li> Weight loss Package</li>'+
-            '<li>Weight loss Package</li>'+
-            '</ul>';
-      } else if (package === 'All-Inclusive Training Package') {
-        detailsElement.innerHTML = '<ul>' +
-            '<li> Training Package</li>'+
-            '<li> Training Package</li>'+
-            '<li> Training Package</li>'+
-            '</ul>';
+    package1.addEventListener('change', function() {
+      if (package1.value === 'backpackers') {
+        roomType1.disabled = true;
+      } else {
+        roomType1.disabled = false;
       }
-    }
-
-    function showEstimateCost() {
-      var package = document.getElementById('bookingForm').elements['package'].value;
-      var stayDuration = parseInt(document.getElementById('stayDuration').value);
-      var numPeople = parseInt(document.getElementById('numPeople').value);
-      var numChild = parseInt(document.getElementById('numChild').value);
-      var basePrice = 2000;
-      var childPrice = 600;
-      var totalPrice = basePrice * stayDuration * numPeople;
-
-      if (!isNaN(numChild) && numChild > 0) {
-        totalPrice += childPrice * stayDuration * numChild;
-      }
-
-      var totalPriceElement = document.getElementById('totalPrice');
-
-      if (package === 'All-Inclusive Fitness Package') {
-        totalPriceElement.textContent = 'Php ' + totalPrice;
-      } else if (package === 'All-Inclusive Weight Loss Package' || package === 'All-Inclusive Training Package') {
-        totalPriceElement.textContent = 'Php ' + totalPrice + ' (based on selected package)';
-      }
-    }
-    function showConfirmationModal() {
-  var package = document.getElementById('bookingForm').elements['package'].value;
-  //var package = document.getElementById('bookingForm').elements['roomType'].value;
-  var stayDuration = document.getElementById('stayDuration').value;
-  var numPeople = document.getElementById('numPeople').value;
-  var numChild = document.getElementById('numChild').value;
-  var checkInDate = document.getElementById('checkInDate').value;
-  var checkOutDate = document.getElementById('checkOutDate').value;
-  var totalPrice = document.getElementById('totalPrice').textContent;
- // var roomType = document.getElementById('package').textContent;
- var roomType = document.getElementById('roomType').value;
-document.getElementById('confirmRoomType').textContent = roomType;
+    });
 
 
-  // Assign user inputs to confirmation modal elements
-  document.getElementById('confirmPackage').textContent = package;
-  document.getElementById('confirmStayDuration').textContent = stayDuration;
-  document.getElementById('confirmNumPeople').textContent = numPeople;
-  document.getElementById('confirmNumChild').textContent = numChild;
-  document.getElementById('confirmCheckInDate').textContent = checkInDate;
-  document.getElementById('confirmCheckOutDate').textContent = checkOutDate;
-  document.getElementById('confirmTotalPrice').textContent = totalPrice;
-  //document.getElementById('confirmRoomType').textContent = roomType;
+  function calculateNumberOfDays() {
+       
+            var checkInDate = new Date(document.getElementById("checkInDate").value);
+            var checkOutDate = new Date(document.getElementById("checkOutDate").value);
 
-  // Calculate and display the estimated cost
-  var estimateCost = calculateEstimateCost(package, stayDuration, numPeople, numChild);
-  document.getElementById('confirmEstimateCost').textContent = estimateCost;
+            var timeDifference = checkOutDate.getTime() - checkInDate.getTime();
+            var numberOfDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
-  openConfirmationModal();
+
+            // Accommodation per night
+            var accommodationPriceDeluxe = 4000;
+            var accommodationPriceVilla = 8000;
+
+            var accommodationAddPeopleDeluxe = 2000;
+            var accommodationAddPeopleVilla = 2000;
+
+            var accommodationAddChildDeluxe = 600;
+            var accommodationAddChildVilla = 600;
+
+            var oneWeekDigitalDeluxe = 1000;
+            var twoWeekDigitalDeluxe = 3000;
+            var threeWeekDigitalDeluxe = 5000;
+            var fourWeekDigitalDeluxe = 7000;
+
+            var oneWeekDigitalVilla = 200;
+            var twoWeekDigitalVilla = 300;
+            var threeWeekDigitalVilla = 400;
+            var fourWeekDigitalVilla = 500;
+            
+            //Base price for Weight - Deluxe
+            var oneWeekBasePriceWeightDeluxe = 29750;
+            var twoWeekBasePriceWeightDeluxe = 50000;
+            var fourWeekBasePriceWeightDeluxe = 94500;
+            var twelveWeekBasePriceWeightDeluxe = 245000;
+
+  
+            var oneWeekaddPeopleWeightDeluxe = 17000;
+            var oneWeekchildPriceWeightDeluxe = 8500;
+
+            var twoWeekaddPeopleWeightDeluxe = 28000;
+            var twoWeekchildPriceWeightDeluxe = 14000;
+
+            var fourWeekaddPeopleWeightDeluxe = 49000;
+            var fourWeekchildPriceWeightDeluxe = 24500;
+
+            var twelveWeekaddPeopleWeightDeluxe = 112000;
+            var twelveWeekchildPriceWeightDeluxe = 56000;
+
+
+
+            //Base price for Weight - Villa
+            var oneWeekBasePriceWeightVilla = 45500;
+            var twoWeekBasePriceWeightVilla = 70000;
+            var fourWeekBasePriceWeightVilla = 122500;
+            var twelveWeekBasePriceWeightVilla = 315000;
+
+  
+            var oneWeekaddPeopleWeightVilla = 21000;
+            var oneWeekchildPriceWeightVilla = 10500;
+
+            var twoWeekaddPeopleWeightVilla = 35000;
+            var twoWeekchildPriceWeightVilla = 17500;
+
+            var fourWeekaddPeopleWeightVilla = 56000;
+            var fourWeekchildPriceWeightVilla = 28000;
+
+            var twelveWeekaddPeopleWeightVilla = 140000;
+            var twelveWeekchildPriceWeightVilla = 70000;
+
+          
+            //Training per weeks - Deluxe - Base Price
+            var oneWeekBasePriceTrainingDeluxe = 24500;
+            var oneWeekaddPeopleTrainingDeluxe = 14000;
+            var oneWeekchildPriceTrainingDeluxe = 7000;
+
+            var twoWeekBasePriceTrainingDeluxe = 43750;
+            var twoWeekaddPeopleTrainingDeluxe = 21000;
+            var twoWeekchildPriceTrainingDeluxe = 10500;
+
+            var fourWeekBasePriceTrainingDeluxe = 80500;
+            var fourWeekaddPeopleTrainingDeluxe = 84000;
+            var fourWeekchildPriceTrainingDeluxe = 42000;
+
+            var twelveWeekBasePriceTrainingDeluxe = 210000;
+            var twelveWeekaddPeopleTrainingDeluxe = 31000;
+            var twelveWeekchildPriceTrainingDeluxe = 20500;
+
+            
+
+            //Training per weeks - Villa - Base Price
+            var oneWeekBasePriceTrainingVilla = 38500;
+            var oneWeekaddPeopleTrainingVilla = 17500;
+            var oneWeekchildPriceTrainingVilla = 8750;
+
+            var twoWeekBasePriceTrainingVilla = 64750;
+            var twoWeekaddPeopleTrainingVilla = 28000;
+            var twoWeekchildPriceTrainingVilla = 14000;
+
+            var twelveWeekBasePriceTrainingVilla = 280000;
+            var twelveWeekaddPeopleTrainingVilla = 115000;
+            var twelveWeekchildPriceTrainingVilla = 57750;
+
+            var fourWeekBasePriceTrainingVilla = 105000;
+            var fourWeekaddPeopleTrainingVilla = 49000;
+            var fourWeekchildPriceTrainingVilla = 24500;
+
+           
+
+            if (numberOfDays > 0) {
+                document.getElementById("num-of-days").textContent = numberOfDays;
+
+                var packageSelect = document.getElementById("package");
+                var selectedPackage = packageSelect.options[packageSelect.selectedIndex].value;
+
+                var roomSelect = document.getElementById("roomType");
+                var selectedRoom = roomSelect.options[roomSelect.selectedIndex].value;
+
+                var numPeople = parseInt(document.getElementById('numPeople').value);
+                var numChild = parseInt(document.getElementById('numChild').value);
+
+                var pricePerDay = 0;
+
+                if (selectedPackage === "accommodations") {
+                    if (selectedRoom === "Deluxe Room") {
+                        pricePerDay = accommodationPriceDeluxe +(accommodationAddPeopleDeluxe *numPeople)+(accommodationAddChildDeluxe*numChild);
+                    } else if (selectedRoom === "Executive Villa") {
+                        pricePerDay = accommodationPriceVilla + (accommodationAddPeopleVilla*numPeople)+(accommodationAddChildVilla*numChild) ;
+                    }
+                } else if (selectedPackage === "backpackers") {
+                   
+                  pricePerDay = 1500 *(numPeople+1) +(accommodationAddChildDeluxe*numChild);
+
+                } else if (selectedPackage === "Bootcamp") {
+                    if (selectedRoom === "Deluxe Room") {
+                        pricePerDay = 300;
+                    } else if (selectedRoom === "Executive Villa") {
+                        pricePerDay = 400;
+                    }
+                } else if (selectedPackage === "Digital Nomads") {
+                    if (selectedRoom === "Deluxe Room") {
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekDigitalDeluxe/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 14) {
+                            
+                            pricePerDay =( twoWeekDigitalDeluxe/14);
+                        }
+                        else if (numberOfDays > 14 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (threeWeekDigitalDeluxe/21);
+                        } else if (numberOfDays > 21 && numberOfDays <= 28) {
+                            
+                            pricePerDay = (fourWeekDigitalDeluxe/28);
+                        } else {
+                            pricePerDay = 1000;
+                        }
+                        // Add additional pricing logic for more than 14 days if needed
+                    } else if (selectedRoom === "Executive Villa") {
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekDigitalVilla/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 14) {
+                            pricePerDay = (twoWeekDigitalVilla/14);
+                        }
+                        else if (numberOfDays > 14 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (threeWeekDigitalVilla/21);
+                        } else if (numberOfDays > 21 && numberOfDays <= 28) {
+                            
+                            pricePerDay = (fourWeekDigitalVilla/28);
+                        } else {
+                            pricePerDay =2000;
+                        }
+                        // Add additional pricing logic for more than 14 days if needed
+                    }
+                } else if (selectedPackage === "All Inclusive Weight-Loss Package") {
+                    if (selectedRoom === "Deluxe Room") {
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekBasePriceWeightDeluxe/7) +(numPeople*oneWeekaddPeopleWeightDeluxe/7) +(numChild*oneWeekchildPriceWeightDeluxe/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (twoWeekBasePriceWeightDeluxe/14)+(numPeople*twoWeekaddPeopleWeightDeluxe/14) +(numChild*twoWeekchildPriceWeightDeluxe/14);
+                        }
+                         else if (numberOfDays > 21 && numberOfDays <= 77) {
+                            
+                            pricePerDay = (fourWeekBasePriceWeightDeluxe/28)+ (numPeople*fourWeekaddPeopleWeightDeluxe/28)+(numChild*fourWeekchildPriceWeightDeluxe/28);
+                        } 
+                        else if(numberOfDays >77) {
+                          pricePerDay = (twelveWeekBasePriceWeightDeluxe/84)+ (numPeople*twelveWeekaddPeopleWeightDeluxe/84)+(numChild*twelveWeekchildPriceWeightDeluxe/84);
+                        }
+                        // Add additional pricing logic for more than 14 days if needed
+                    } else if (selectedRoom === "Executive Villa") {
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekBasePriceWeightVilla/7) +(numPeople*oneWeekaddPeopleWeightVilla/7) +(numChild*oneWeekchildPriceWeightVilla/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (twoWeekBasePriceWeightVilla/14)+(numPeople*twoWeekaddPeopleWeightVilla/14) +(numChild*twoWeekchildPriceWeightVilla/14);
+                        }
+                         else if (numberOfDays > 21 && numberOfDays <= 77) {
+                            
+                          pricePerDay = (fourWeekBasePriceWeightVilla/28)+ (numPeople*fourWeekaddPeopleWeightVilla/28)+(numChild*fourWeekchildPriceWeightVilla/28);
+                        } 
+                        else if(numberOfDays >77) {
+                          pricePerDay = (twelveWeekBasePriceWeightVilla/84)+ (numPeople*twelveWeekaddPeopleWeightVilla/84)+(numChild*twelveWeekchildPriceWeightVilla/84);
+                        }
+                        // Add additional pricing logic for more than 14 days if needed
+                    }
+                } else if (selectedPackage === "All Inclusive Training Package") {
+                    if (selectedRoom === "Deluxe Room") {
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekBasePriceTrainingDeluxe/7) +(numPeople*oneWeekaddPeopleTrainingDeluxe/7) +(numChild*oneWeekchildPriceTrainingDeluxe/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (twoWeekBasePriceTrainingDeluxe/14)+(numPeople*twoWeekaddPeopleTrainingDeluxe/14) +(numChild*twoWeekchildPriceTrainingDeluxe/14);
+                        }
+                         else if (numberOfDays >21 && numberOfDays <= 77) {
+                            
+                            pricePerDay = (fourWeekBasePriceTrainingDeluxe/28)+ (numPeople*fourWeekaddPeopleTrainingDeluxe/28)+(numChild*fourWeekchildPriceTrainingDeluxe/28);
+                        } 
+                        else if (numberOfDays >77) {
+                          pricePerDay = (twelveWeekBasePriceTrainingDeluxe/84)+ (numPeople*twelveWeekaddPeopleTrainingDeluxe/84)+(numChild*twelveWeekchildPriceTrainingDeluxe/84);
+                        }
+                        // Add additional pricing logic for more than 14 days if needed
+                    } else if (selectedRoom === "Executive Villa") {
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekBasePriceTrainingVilla/7) +(numPeople*oneWeekaddPeopleTrainingVilla/7) +(numChild*oneWeekchildPriceTrainingVilla/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (twoWeekBasePriceTrainingVilla/14)+(numPeople*twoWeekaddPeopleTrainingVilla/14) +(numChild*twoWeekchildPriceTrainingVilla/14);
+                        }
+                         else if (numberOfDays >21 && numberOfDays <= 77) {
+                            
+                            pricePerDay = (fourWeekBasePriceTrainingVilla/28)+ (numPeople*fourWeekaddPeopleTrainingVilla/28)+(numChild*fourWeekchildPriceTrainingVilla/28);
+                        }  
+                         else if(numberOfDays >77) {
+                          pricePerDay = (twelveWeekBasePriceTrainingVilla/84)+ (numPeople*twelveWeekaddPeopleTrainingVilla/84)+(numChild*twelveWeekchildPriceTrainingVilla/84);
+                        }
+                        // Add additional pricing logic for more than 14 days if needed
+                    }
+                }
+
+
+
+
+                var totalPrice = numberOfDays * pricePerDay;
+             //   document.getElementById("total-price").textContent ='Php '+ parseInt(totalPrice.toFixed(0));
+            //    document.getElementById("pricePerDay").textContent = 'Php ' +parseInt(pricePerDay.toFixed(0)) ;
+                document.getElementById("pricePerDay").textContent = "Php " + Math.floor(pricePerDay).toLocaleString();
+                document.getElementById("total-price").textContent = "Php " + Math.floor(totalPrice).toLocaleString();
+
+                
+            }
+        }
+
+        document.querySelector("form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            calculateNumberOfDays();
+        });
+
+
+        $(function() {
+      $("#check-in").datepicker({ dateFormat: "yy-mm-dd" });
+      $("#check-out").datepicker({ dateFormat: "yy-mm-dd" });
+    });
+
+    
+    
+function updatePackageDetails() {
+         var package = document.getElementById('package').value;
+  var roomType = document.getElementById('roomType').value;
+  var detailsElement = document.getElementById('packageDetails');
+   
+
+  // Clear previous details
+  detailsElement.innerHTML = '';
+
+  // Update details based on the selected package and room type
+     
+  if (package === 'backpackers') {
+    detailsElement.innerHTML = '<ul>' +
+     
+      '<li>  backpackers details</li>'+
+      '</ul>';
+  }
+  if (package === 'Bootcamp') {
+    detailsElement.innerHTML = '<ul>' +
+     
+      '<li>  Bootcamp details</li>'+
+      '</ul>';
+  }
+  if (package === 'Digital Nomads') {
+    detailsElement.innerHTML = '<ul>' +
+     
+      '<li>  Digital Nomads details</li>'+
+      '</ul>';
+  }
+  if (package === 'accommodations') {
+    detailsElement.innerHTML = '<ul>' +
+     
+      '<li>  Accommodations details</li>'+
+      '</ul>';
+  } else if (package === 'All Inclusive Fitness Package' && roomType === 'Deluxe Room') {
+    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
+      '<li> Free use of the gym and equipment any time</li>' +
+      '<li> A private lesson—one hour every week, with the trainer of your choice</li>' +
+      '<li>Deluxe accommodation with a/c and en suite bathroom</li>' +
+      '<li> Swimming pool access (when pool is finished being constructed)</li>' +
+      '<li> Three meals a day (Sunday included)</li>' +
+      '<li> Five bottles of water, daily (1.5 lt)</li>' +
+      '<li> A one hour massage, once per week</li>' +
+      '<li> One-time body composition analysis with our InBody270 scale</li>' +
+      '<li> Fight Club Philippines T-shirt</li>' +
+      '</ul>';
+
+
+  } else if (package === 'All Inclusive Fitness Package' && roomType === 'Executive Villa') {
+    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
+      '<li>  Free use of the gym and equipment any time</li>' +
+      '<li> Three private lessons—one hour every week, with the trainer of your choice</li>' +
+      '<li>  Deluxe accommodation with a/c and en suite bathroom</li>' +
+      '<li>  Swimming pool access (when pool is finished being constructed)</li>' +
+      '<li>  Three meals a day (Sunday included)</li>' +
+      '<li>  Five bottles of water, daily (1.5 lt)</li>' +
+      '<li> One 1 hour massage, once per week</li>' +
+      '<li>  Weekly body composition analysis with our InBody270 scale</li>' +  
+      '<li>  Fight Club Philippines T-shirt</li>' +
+      '</ul>';
+
+  } 
+
+  else if (package === 'All Inclusive Weight-Loss Package' && roomType === 'Deluxe Room') {
+    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
+    
+      '<li> Free use of the gym and equipment any time</li>'+
+      '<li>A private lesson—one hour every week, with the trainer of your choice</li>'+
+      '<li>Deluxe accommodation with a/c and en suite bathroom</li>'+
+      '<li>Swimming pool access (when pool is finished being constructed)</li>'+
+      '<li>Three “diet” meals a day (Sunday included)</li>'+
+      '<li>Five bottles of water, daily (1.5 lt)</li>'+
+      '<li> A one hour massage, once per week</li>'+
+      '<li>Weekly body composition analysis with our InBody270 scale</li>'+
+      '<li> Before and after picture (from four weeks stay)</li>'+
+      '<li>Fight Club Philippines T-shirt</li>' +
+      '</ul>';
+
+  } else if (package === 'All Inclusive Weight-Loss Package' && roomType === 'Executive Villa') {
+    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
+   
+      '<li>Free use of the gym and equipment any time</li>'+
+      '<li>Three private lessons—one hour every week, with the trainer of your choice</li>'+
+      '<li> Deluxe accommodation with a/c and en suite bathroom</li>'+
+      '<li>Swimming pool access (when pool is finished being constructed)</li>'+
+      '<li>Three “diet” meals a day (Sunday included)</li>'+
+      '<li>Five bottles of water, daily (1.5 lt)</li>'+
+      '<li> One 1 hour massage, once per week</li>'+
+      '<li> Weekly body composition analysis with our InBody270 scale</li>'+
+      '<li>Before and after picture (from four weeks stay)</li>'+
+      '<li> Fight Club Philippines T-shirt, boxing gloves, and hand wraps+</li>'+
+      '</ul>';
+
+  } else if (package === 'All Inclusive Training Package' && roomType === 'Deluxe Room') {
+    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
+   
+      '<li> Free use of the gym and equipment any time</li>'+
+      '<li> A private lesson—one hour every week, with the trainer of your choice</li>'+
+      '<li> Deluxe accommodation with a/c and en suite bathroom</li>'+
+      '<li> Swimming pool access (when pool is finished being constructed)</li>'+
+      '<li> Three meals a day (Sunday included)</li>'+
+      '<li> Daily supplement (2 protein shakes, BCAA, Creatine and multivitamin)</li>'+
+      '<li> Five bottles of water, daily (1.5 lt)</li>'+
+      '<li> A one hour massage, once per week</li>'+
+      '<li> One-time body composition analysis with our InBody270 scale</li>'+
+      '<li> Fight Club Philippines T-shirt</li>'+
+      '</ul>';
+
+  } else if (package === 'All Inclusive Training Package' && roomType === 'Executive Villa') {
+    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
+     
+      '<li>  Free use of the gym and equipment any time</li>'+
+      '<li> Three private lessons—one hour every week, with the trainer of your choice</li>'+
+      '<li>  Deluxe accommodation with a/c and en suite bathroom</li>'+
+      '<li>  Swimming pool access (when pool is finished being constructed)</li>'+
+      '<li>  Three meals a day (Sunday included)</li>'+
+      '<li>  Daily supplement (2 protein shakes, BCAA, Creatine and multivitamin)</li>'+
+      '<li> Five bottles of water, daily (1.5 lt)</li>'+
+      '<li>  One 1 hour massage, once per week</li>'+
+      '<li>  Weekly body composition analysis with our InBody270 scale</li>'+
+      '<li>  Fight Club Philippines T-shirt</li>'+
+      '</ul>';
+  } 
 }
 
+function openModal() {
 
-function calculateEstimateCost(package, stayDuration, numPeople, numChild) {
-  var basePrice = 2000;
-  var childPrice = 600;
-  var totalPrice = basePrice * stayDuration * numPeople;
+  var numPeople = document.getElementById('numPeople').value;
+  var numChild = document.getElementById('numChild').value;
 
-  if (!isNaN(numChild) && numChild > 0) {
-    totalPrice += childPrice * stayDuration * numChild;
-  }
+  var roomType = document.getElementById('roomType').value;
+document.getElementById('confirmRoomType').textContent = roomType;
+      //document.getElementById("modal").style.display = "block";
+      // Set the selected inputs in the pop-up
+    //  document.getElementById("confirmPackage").innerText = document.getElementById("package").value;
+      document.getElementById('confirmNumPeople').textContent = numPeople;
+      document.getElementById('confirmNumChild').textContent = numChild;
 
-  return 'Php ' + totalPrice;
+
+      var totalPrice = document.getElementById('total-price').textContent;
+      document.getElementById('confirmTotalPrice').textContent = totalPrice;
+
+      var checkInDate = document.getElementById('checkInDate').value;
+      document.getElementById('confirmCheckInDate').textContent = checkInDate;
+
+      var checkOutDate = document.getElementById('checkOutDate').value;
+      document.getElementById('confirmCheckOutDate').textContent = checkOutDate;
+
+      var promoCode = document.getElementById('promo-code-input').value;
+      document.getElementById('confirmPromoCode').textContent = promoCode;
+ 
+     // var package = document.getElementById('confirmPackage').value;
+      document.getElementById("confirmPackage").innerText = document.getElementById("package").value;
+      var package = document.getElementById('bookingForm').elements['package'].value;
+
+      
+
+
+      var missingFields = [];
+
+if (!package) {
+  missingFields.push("Package");
+}
+//if (!roomType) {
+  //missingFields.push("Room Type");
+//}
+if (!checkInDate) {
+  missingFields.push("Check-in Date");
+}
+if (!checkOutDate) {
+  missingFields.push("Check-out Date");
+}
+
+if (missingFields.length > 0) {
+    var message = "Please fill in the following required fields:\n\n";
+    message += missingFields.join("\n");
+    alert(message);
+  } else  {
+      openConfirmationModal();
+    }
+
+
+    // Validate name input
+    
+  
+    }
+
+function resetForm() {
+  document.getElementById('bookingForm').reset();
+  document.getElementById('totalPrice').textContent = ''; // Clear the estimate cost
 }
 
 
@@ -409,7 +814,7 @@ function sendBookingInfoToAirtable(firstName, lastName, email, message) {
   };
 
  
-  var package = document.getElementById('confirmPackage').textContent;
+      var package = document.getElementById('confirmPackage').textContent;
       var stayDuration = document.getElementById('confirmStayDuration').textContent;
       var numPeople = document.getElementById('confirmNumPeople').textContent;
       var numChild = document.getElementById('confirmNumChild').textContent;
@@ -417,6 +822,7 @@ function sendBookingInfoToAirtable(firstName, lastName, email, message) {
       var checkInDate = document.getElementById('confirmCheckInDate').textContent;
       var checkOutDate = document.getElementById('confirmCheckOutDate').textContent;
       var roomType = document.getElementById('confirmRoomType').textContent;
+      var promoCode = document.getElementById('confirmPromoCode').textContent;
 
       var data = {
         "fields": {
@@ -425,13 +831,16 @@ function sendBookingInfoToAirtable(firstName, lastName, email, message) {
           "Email": email,
           "Message": message,
           "Package": package,
-          "Number of Weeks": stayDuration,
           "Additional Adult": numPeople,
           "Additional Child": numChild,
           "Total Price": totalPrice,
           "Check-In Date": checkInDate,
           "Check-Out Date": checkOutDate,
-          "Room Type": roomType
+          "Status": 'Pending',
+          "Room Type": roomType,
+          "Promo Code": promoCode          
+
+         
         }
       };
 
@@ -489,7 +898,7 @@ function sendBookingInfoToAirtable(firstName, lastName, email, message) {
       closeConfirmationModal();
 
 // Show a pop-up window with the success message
-window.alert('Reservation was successful');
+window.alert('Your reservation was successfull, we will contact you for further assisstance regarding your reservation. Thank you.');
     }
 
 
