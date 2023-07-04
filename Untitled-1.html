@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>FCP Booking System</title>
-
+ 
  <style>
     * {
       box-sizing: border-box;
@@ -28,6 +28,8 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      flex: 1;
+      order: 1;
     }
 
     .form-row {
@@ -51,6 +53,8 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      flex: 1;
+  order: 2; 
     }
 
     select[name="package"] {
@@ -68,6 +72,9 @@
     .estimate-button {
       margin-top: 10px;
     }
+    .container {
+  display: flex;
+}
 
     .book-now-button {
   margin-top: 10px;
@@ -79,6 +86,14 @@
   cursor: pointer;
   display: block;
   margin: 0 auto; /* Center the button horizontally */
+}
+
+.promo {
+  display: block;
+  margin: 0 auto; /* Center the button horizontally */
+} 
+.reset {
+  margin: 0 auto; 
 }
 
     /* Modal styles */
@@ -121,6 +136,20 @@
       cursor: pointer;
     }
 
+    @media (max-width: 767px) {
+  .container {
+    flex-direction: column; /* Switch to column layout */
+  }
+
+  .form-column  {
+    order: 2; /* Change order for mobile */
+  }
+
+  .details-column {
+    order: 1; /* Change order for mobile */
+  }
+}
+
     @media (min-width: 600px) {
       .form-container {
         flex-direction: row;
@@ -130,11 +159,13 @@
       .form-column {
         flex-basis: 50%;
         padding: 0;
+    
       }
 
       .details-column {
         flex-basis: 50%;
         padding: 0;
+       
       }
 
       .result-container {
@@ -142,64 +173,85 @@
       }
 
       .button-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 3px;
-  cursor: pointer;
+       display: flex;  
+      
+     
+       margin: 0 auto;
+      
+       border: none;
+       padding: 10px 20px;
+       border-radius: 3px;
+       cursor: pointer;
   
-}
+        }
 
-.button-group input[type="text"] {
-  margin-right: 10px;
-}
+     .button-group input[type="text"] {
+       margin-right: 10px;
+        }
 
+        input[type="date"] {
+  width: 100%;
+  box-sizing: border-box;
+}
 
     }
+  
+
+    @font-face {
+  font-family: 'Soloist';
+  src: url(C:\Users\user\Desktop\css\soloist1.woff) format('woff'),
+       url(C:\Users\user\Desktop\css\soloist1.ttf) format('ttf');
+  /* Add other font formats if necessary (e.g., TTF, EOT) */
+}
+
+.soloist-font {
+    font-family: 'Soloist', 'Times New Roman', Times, serif;
+  }
   </style>
 </head>
 <body>
-  <h1>FCP Booking System</h1>
-
+  <h1>RESERVATION SYSTEM</h1>
   <div class="form-container">
     <div class="form-column">
       <h2>Select a Package:</h2>
       <form id="bookingForm" onsubmit="return false;">
-        <div class="form-row">
-        <select id="package" class="form-label" onchange="updatePackageDetails()" required>
-            <option value="" selected disabled>Select a Package</option>
-             <option value="accommodations">Accommodations Only</option>
-            <option value="backpackers">Backpacker Special</option>
-            <option value="Bootcamp">Bootcamp</option>
-            <option value="Digital Nomads">Digital Nomads Special</option>
-          <option value="All Inclusive Weight-Loss Package">All Inclusive Weight-Loss Package</option>
-          <option value="All Inclusive Training Package">All Inclusive Training Package</option>
-          <!--  <option value="All Inclusive Fitness Package">All Inclusive Fitness Package</option>  -->
+        <div class="form-row" id="roomGroup">
+        <select id="package" class="form-input" onchange="updatePackageDetails()" required>
+            <option class="form-label" value="" selected disabled>Select a Package</option>
+            <option class="form-label"value="Backpacker Special">Backpacker Special</option>
+             <option class="form-label" value="Accommodations Only-Deluxe">Accommodations Only-Deluxe</option>
+             <option class="form-label" value="Accommodations Only-Villa">Accommodations Only-Villa</option>
+         
+            
+           <!-- <option value="Bootcamp">Bootcamp</option>--> 
+           <!-- <option value="Digital Nomads">Digital Nomads Special</option> -->
+          <option class="form-label" value="All Inclusive Weight Management Program-Deluxe">All Inclusive Weight Management Program-Deluxe</option>
+          <option class="form-label" value="All-Inclusive VIP Weight Management Program-Villa">All-Inclusive VIP Weight Management Program-Villa</option>
+          <option class="form-label" value="All-Inclusive Combat Sports Training Program-Deluxe">All-Inclusive Combat Sports Training Program-Deluxe</option>
+          <option class="form-label" value="All-Inclusive VIP Combat Sports Training Program-Villa">All-Inclusive VIP Combat Sports Training Program-Villa</option>
+          <option class="form-label" value="All Inclusive Fitness Package-Deluxe">All Inclusive Fitness Package-Deluxe</option>
+          <option class="form-label" value="All-Inclusive VIP Fitness Program-Villa">All-Inclusive VIP Fitness Program-Villa</option>
         </select>
       </div>
-     
-        <select id="roomType" class="form-label" onchange="updatePackageDetails()" required>
-          <option value="" selected disabled>Select a room type</option>
-          <option value="Deluxe Room">Deluxe Room</option>
-          <option value="Executive Villa">Executive Villa</option>
-        </select>
-        <div class="form-row">
-          <label class="form-label" for="checkInDate">Check-In Date:</label>
-          <input class="form-input" type="date" name="checkInDate" id="checkInDate" required>
-        </div>
-
-        <div class="form-row">
+    <!----> 
+        <select id="roomType" class="form-input" onchange="updatePackageDetails()" hidden>
+          <option class="form-label" value="" selected disabled>Select a room type</option>
+          <option class="form-label" value="Deluxe Room">Deluxe Room</option>
+          <option class="form-label" value="Executive Villa">Executive Villa</option>
+        </select> <br>
+    
+        <label class="form-label" for="checkInDate">Check-In Date:</label>
+          <input   class="form-input"  type="date" name="checkInDate" id="checkInDate" required>
+       
           <label class="form-label" for="checkOutDate">Check-Out Date:</label>
           <input class="form-input" type="date" name="checkOutDate" id="checkOutDate" required>
-        </div>
+          
 
 
-        <div class="form-row">
-          <label class="form-label" for="numPeople">Additional Person:</label>
+   
+
+       <br> <div class="form-row">
+         <br> <label class="form-label" for="numPeople">Additional Adult:</label>
           <input class="form-input" type="number" name="numPeople" id="numPeople" min="0" value="0">
         </div>
 
@@ -207,32 +259,22 @@
           <label class="form-label" for="numChild">Additional child (4-12 years old):</label>
           <input class="form-input" type="number" name="numChild" id="numChild" min="0" value="0">
         </div>
-
-
-    
-        <br> <button  type="button" class="form-label" onclick="resetForm()">Reset Values</button><br>
-
-      
-
-
-       
-       <button class="form-label" onclick="calculateNumberOfDays()">View Estimate Cost</button>
+      <br><input  type="text" id="promoCodeInput" placeholder="Promo Code"><br>
        <div class="result-container">
         <span class="result-label">Number of Days: </span><span id="num-of-days"></span> <br>
-        <span class="result-label">Total Price: </span><span id="total-price"></span> <br>
         <span class="result-label">Price per Day: </span><span id="pricePerDay"></span> <br>
+        <span class="result-label">Total Price: </span><span id="total-price"></span> <br>
+       </div> <br>  
+ 
 
-       </div>
-
-
-
+       <span class="result-label"> </span><span id="totalBill"></span> <br>
 
       </form>
-      <div class="button-group">
-        <input type="text" id="promo-code-input" placeholder="Promo Code">
-        <button  onclick="openModal()">Reserve Now!</button>
+      <div class=" button-group">
+       
+       <br> <button class=" book-now-button"  onclick="openModal()">Reserve Now!</button>
       </div>
-    
+
 
     </div>
 
@@ -248,43 +290,33 @@
       <span class="close" onclick="closeConfirmationModal()">&times;</span>
       <h2>Confirmation</h2>
 
-
+      <div id="bookingDetails"></div>
       <div class="form-row">
-        <label class="form-label" for="package">Selected Package   : <span id="confirmPackage"></span></label>
+        <label class="form-label" for="firstName">First Name:</label>
+         <input  class="form-input" type="text" id="firstName" required>
+      </div>
+      <div class="form-row">
+    <label class="form-label" for="lastName">Last Name:</label>
+      <input  class="form-input" type="text" id="lastName" required>
+      </div>
+      <div class="form-row">
+       <label class="form-label" for="email">Email:</label>
+        <input  class="form-input" type="email" id="email" required>
+      </div>
+      <div class="form-row">
+            <label class="form-label" for="message">Message:</label>
+       <textarea  class="form-input" id="message" required></textarea>
       </div>
 
-      <div class="form-row">
-        <label class="form-label" for="roomType">Selected Room   : <span id="confirmRoomType"></span></label>
-      </div>
+      <div class=" button-group">
+    <button class="button-group" onclick="confirmBooking()">Confirm Reservation</button> 
+    <button class="button-group" onclick="closeConfirmationModal()">Cancel</button>
+    </div>
 
-
-      <div class="form-row">
-        <label class="form-label" for="checkInDate">Check-In Date: <span id="confirmCheckInDate"></span></label>
-      </div>
-  
-      <div class="form-row">
-        <label class="form-label" for="checkOutDate">Check-Out Date:      <span id="confirmCheckOutDate"> </span></label>
-      </div>
-
-
-      <div class="form-row">
-        <label class="form-label" for="numPeople">Additional Person: <span id="confirmNumPeople"></span></label>
-      </div>
-
+    </div>
       
-      <div class="form-row">
-        <label class="form-label" for="numChild">Additional Child: <span id="confirmNumChild"></span></label>
-      </div>
-
-      
-      <div class="form-row">
-        <label class="form-label" for="totalPrice">Estimated Cost:  <span id="confirmTotalPrice"></span></label>
-      </div>
-
-       
-      <div class="form-row">
-        <label class="form-label" for="promo-code-input">Promo code:  <span id="confirmPromoCode"></span></label>
-      </div>
+    
+      <!--
 
       <div class="form-row">
         <label class="form-label" for="firstName">First Name:  <input class="form-input" type="text" name="firstName" id="firstName" required></label>
@@ -305,7 +337,7 @@
         <label class="form-label" for="message">Message:</label>
         <textarea class="form-input" name="message" id="message" rows="4" required></textarea>
       </div>
-
+-->
       
       <!-- Hidden input fields to store user inputs -->
       <input type="hidden" id="confirmPackage" name="confirmPackage">
@@ -315,37 +347,47 @@
       <input type="hidden" id="confirmCheckInDate" name="confirmCheckInDate">
       <input type="hidden" id="confirmCheckOutDate" name="confirmCheckOutDate">
       <input type="hidden" id="confirmTotalPrice" name="confirmTotalPrice">
-      <button class="confirm-button" onclick="confirmBooking()">Confirm Reservation</button>
+      <input type="hidden" id="confirmPromoCode" name="confirmPromoCode">
+      
     </div>  
   </div>
   
 
   <script>
-  
-  const package1 = document.getElementById('package');
-    const roomType1 = document.getElementById('roomType');
 
-    package1.addEventListener('change', function() {
-      if (package1.value === 'backpackers') {
-        roomType1.disabled = true;
-      } else {
-        roomType1.disabled = false;
-      }
-    });
+
+    const packageSelect = document.getElementById('package');
+    const checkInDateInput = document.getElementById('checkInDate');
+    const checkOutDateInput = document.getElementById('checkOutDate');
+    const priceDisplay = document.getElementById('total-price');
+    const addNumPeople = document.getElementById('numPeople');
+    const addNumChild = document.getElementById('numChild');
+
+
+    // Event listeners for package and date inputs
+    packageSelect.addEventListener('change', calculateNumberOfDays);
+    checkInDateInput.addEventListener('input', calculateNumberOfDays);
+    checkOutDateInput.addEventListener('input', calculateNumberOfDays);
+    addNumPeople.addEventListener('input', calculateNumberOfDays);
+    addNumChild.addEventListener('input', calculateNumberOfDays);
 
 
   function calculateNumberOfDays() {
-       
+
+            var packageSelect = document.getElementById("package");
+            var selectedPackage = packageSelect.options[packageSelect.selectedIndex].value;
+
             var checkInDate = new Date(document.getElementById("checkInDate").value);
             var checkOutDate = new Date(document.getElementById("checkOutDate").value);
 
+            
             var timeDifference = checkOutDate.getTime() - checkInDate.getTime();
             var numberOfDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
+          
 
             // Accommodation per night
             var accommodationPriceDeluxe = 4000;
-            var accommodationPriceVilla = 8000;
+            var accommodationPriceVilla = 6000;
 
             var accommodationAddPeopleDeluxe = 2000;
             var accommodationAddPeopleVilla = 2000;
@@ -440,6 +482,46 @@
             var fourWeekaddPeopleTrainingVilla = 49000;
             var fourWeekchildPriceTrainingVilla = 24500;
 
+
+             //Fitness per weeks - Deluxe - Base price
+            var oneWeekBasePriceFitnessDeluxe = 19600;
+            var oneWeekaddPeopleFitnessDeluxe = 11200;
+            var oneWeekchildPriceFitnessDeluxe = 5600;
+
+            var twoWeekBasePriceFitnessDeluxe = 35000;
+            var twoWeekaddPeopleFitnessDeluxe = 16800;
+            var twoWeekchildPriceFitnessDeluxe = 8400;
+
+            var fourWeekBasePriceFitnessDeluxe = 64400;
+            var fourWeekaddPeopleFitnessDeluxe = 28000;
+            var fourWeekchildPriceFitnessDeluxe = 14000;
+
+
+            var twelveWeekBasePriceFitnessDeluxe = 168000;
+            var twelveWeekaddPeopleFitnessDeluxe = 67200;
+            var twelveWeekchildPriceFitnessDeluxe = 33600;
+            
+            
+
+            //Fitness per weeks - Villa - Base price
+            var oneWeekBasePriceFitnessVilla = 30800;
+            var oneWeekaddPeopleFitnessVilla = 14000;
+            var oneWeekchildPriceFitnessVilla = 7000;
+
+            var twoWeekBasePriceFitnessVilla = 51800;
+            var twoWeekaddPeopleFitnessVilla = 22400;
+            var twoWeekchildPriceFitnessVilla = 11200;
+
+            var fourWeekBasePriceFitnessVilla = 84000;
+            var fourWeekaddPeopleFitnessVilla = 39200;
+            var fourWeekchildPriceFitnessVilla = 19600;
+        
+
+            var twelveWeekBasePriceFitnessVilla = 224000;
+            var twelveWeekaddPeopleFitnessVilla = 92400;
+            var twelveWeekchildPriceFitnessVilla = 46200;
+
+
            
 
             if (numberOfDays > 0) {
@@ -456,23 +538,20 @@
 
                 var pricePerDay = 0;
 
-                if (selectedPackage === "accommodations") {
-                    if (selectedRoom === "Deluxe Room") {
+                if (selectedPackage === "Accommodations Only-Deluxe") {
+                
                         pricePerDay = accommodationPriceDeluxe +(accommodationAddPeopleDeluxe *numPeople)+(accommodationAddChildDeluxe*numChild);
-                    } else if (selectedRoom === "Executive Villa") {
-                        pricePerDay = accommodationPriceVilla + (accommodationAddPeopleVilla*numPeople)+(accommodationAddChildVilla*numChild) ;
-                    }
-                } else if (selectedPackage === "backpackers") {
+                    
+                }  else if(selectedPackage === "Accommodations Only-Villa") {
+                
+                        pricePerDay = accommodationPriceVilla +(accommodationAddPeopleVilla *numPeople)+(accommodationAddChildVilla*numChild);
+                    
+                } 
+                else if (selectedPackage === "Backpacker Special") {
                    
                   pricePerDay = 1500 *(numPeople+1) +(accommodationAddChildDeluxe*numChild);
 
-                } else if (selectedPackage === "Bootcamp") {
-                    if (selectedRoom === "Deluxe Room") {
-                        pricePerDay = 300;
-                    } else if (selectedRoom === "Executive Villa") {
-                        pricePerDay = 400;
-                    }
-                } else if (selectedPackage === "Digital Nomads") {
+                } /* else if (selectedPackage === "Digital Nomads") {
                     if (selectedRoom === "Deluxe Room") {
                         if (numberOfDays <= 7) {
                             pricePerDay = (oneWeekDigitalDeluxe/7);
@@ -507,8 +586,8 @@
                         }
                         // Add additional pricing logic for more than 14 days if needed
                     }
-                } else if (selectedPackage === "All Inclusive Weight-Loss Package") {
-                    if (selectedRoom === "Deluxe Room") {
+                } */else if (selectedPackage === "All Inclusive Weight Management Program-Deluxe") {
+
                         if (numberOfDays <= 7) {
                             pricePerDay = (oneWeekBasePriceWeightDeluxe/7) +(numPeople*oneWeekaddPeopleWeightDeluxe/7) +(numChild*oneWeekchildPriceWeightDeluxe/7);
                         } else if (numberOfDays > 7 && numberOfDays <= 21) {
@@ -519,11 +598,12 @@
                             
                             pricePerDay = (fourWeekBasePriceWeightDeluxe/28)+ (numPeople*fourWeekaddPeopleWeightDeluxe/28)+(numChild*fourWeekchildPriceWeightDeluxe/28);
                         } 
-                        else if(numberOfDays >77) {
+                         else if(numberOfDays >77) {
                           pricePerDay = (twelveWeekBasePriceWeightDeluxe/84)+ (numPeople*twelveWeekaddPeopleWeightDeluxe/84)+(numChild*twelveWeekchildPriceWeightDeluxe/84);
                         }
+                      }  
                         // Add additional pricing logic for more than 14 days if needed
-                    } else if (selectedRoom === "Executive Villa") {
+                   else if (selectedPackage === "All-Inclusive VIP Weight Management Program-Villa") {
                         if (numberOfDays <= 7) {
                             pricePerDay = (oneWeekBasePriceWeightVilla/7) +(numPeople*oneWeekaddPeopleWeightVilla/7) +(numChild*oneWeekchildPriceWeightVilla/7);
                         } else if (numberOfDays > 7 && numberOfDays <= 21) {
@@ -539,8 +619,8 @@
                         }
                         // Add additional pricing logic for more than 14 days if needed
                     }
-                } else if (selectedPackage === "All Inclusive Training Package") {
-                    if (selectedRoom === "Deluxe Room") {
+                else if (selectedPackage === "All-Inclusive Combat Sports Training Program-Deluxe") {
+                 
                         if (numberOfDays <= 7) {
                             pricePerDay = (oneWeekBasePriceTrainingDeluxe/7) +(numPeople*oneWeekaddPeopleTrainingDeluxe/7) +(numChild*oneWeekchildPriceTrainingDeluxe/7);
                         } else if (numberOfDays > 7 && numberOfDays <= 21) {
@@ -554,8 +634,9 @@
                         else if (numberOfDays >77) {
                           pricePerDay = (twelveWeekBasePriceTrainingDeluxe/84)+ (numPeople*twelveWeekaddPeopleTrainingDeluxe/84)+(numChild*twelveWeekchildPriceTrainingDeluxe/84);
                         }
+                      }
                         // Add additional pricing logic for more than 14 days if needed
-                    } else if (selectedRoom === "Executive Villa") {
+                  else if (selectedPackage === "All-Inclusive VIP Combat Sports Training Program-Villa") {
                         if (numberOfDays <= 7) {
                             pricePerDay = (oneWeekBasePriceTrainingVilla/7) +(numPeople*oneWeekaddPeopleTrainingVilla/7) +(numChild*oneWeekchildPriceTrainingVilla/7);
                         } else if (numberOfDays > 7 && numberOfDays <= 21) {
@@ -571,10 +652,40 @@
                         }
                         // Add additional pricing logic for more than 14 days if needed
                     }
-                }
-
-
-
+                 else if (selectedPackage === "All Inclusive Fitness Package-Deluxe") {
+                 
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekBasePriceFitnessDeluxe/7) +(numPeople*oneWeekaddPeopleFitnessDeluxe/7) +(numChild*oneWeekchildPriceFitnessDeluxe/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (twoWeekBasePriceFitnessDeluxe/14)+(numPeople*twoWeekaddPeopleFitnessDeluxe/14) +(numChild*twoWeekchildPriceFitnessDeluxe/14);
+                        }
+                         else if (numberOfDays >21 && numberOfDays <= 77) {
+                            
+                            pricePerDay = (fourWeekBasePriceFitnessDeluxe/28)+ (numPeople*fourWeekaddPeopleFitnessDeluxe/28)+(numChild*fourWeekchildPriceFitnessDeluxe/28);
+                        } 
+                        else if (numberOfDays >77) {
+                          pricePerDay = (twelveWeekBasePriceFitnessDeluxe/84)+ (numPeople*twelveWeekaddPeopleFitnessDeluxe/84)+(numChild*twelveWeekchildPriceFitnessDeluxe/84);
+                        }
+                      }
+                        // Add additional pricing logic for more than 14 days if needed
+                     else if (selectedPackage === "All-Inclusive VIP Fitness Program-Villa") {
+                        if (numberOfDays <= 7) {
+                            pricePerDay = (oneWeekBasePriceFitnessVilla/7) +(numPeople*oneWeekaddPeopleFitnessVilla/7) +(numChild*oneWeekchildPriceFitnessVilla/7);
+                        } else if (numberOfDays > 7 && numberOfDays <= 21) {
+                            
+                            pricePerDay = (twoWeekBasePriceFitnessVilla/14)+(numPeople*twoWeekaddPeopleFitnessVilla/14) +(numChild*twoWeekchildPriceFitnessVilla/14);
+                        }
+                         else if (numberOfDays >21 && numberOfDays <= 77) {
+                            
+                            pricePerDay = (fourWeekBasePriceFitnessVilla/28)+ (numPeople*fourWeekaddPeopleFitnessVilla/28)+(numChild*fourWeekchildPriceFitnessVilla/28);
+                        }  
+                         else if(numberOfDays >77) {
+                          pricePerDay = (twelveWeekBasePriceFitnessVilla/84)+ (numPeople*twelveWeekaddPeopleFitnessVilla/84)+(numChild*twelveWeekchildPriceFitnessVilla/84);
+                        }
+                        // Add additional pricing logic for more than 14 days if needed
+                    }
+           
 
                 var totalPrice = numberOfDays * pricePerDay;
              //   document.getElementById("total-price").textContent ='Php '+ parseInt(totalPrice.toFixed(0));
@@ -584,12 +695,15 @@
 
                 
             }
-        }
 
+        } 
+   
         document.querySelector("form").addEventListener("submit", function (event) {
             event.preventDefault();
             calculateNumberOfDays();
         });
+
+
 
 
         $(function() {
@@ -600,9 +714,9 @@
     
     
 function updatePackageDetails() {
-         var package = document.getElementById('package').value;
-  var roomType = document.getElementById('roomType').value;
-  var detailsElement = document.getElementById('packageDetails');
+  const package = document.getElementById('package').value;
+  const roomType = document.getElementById('roomType').value;
+  const detailsElement = document.getElementById('packageDetails');
    
 
   // Clear previous details
@@ -610,118 +724,187 @@ function updatePackageDetails() {
 
   // Update details based on the selected package and room type
      
-  if (package === 'backpackers') {
-    detailsElement.innerHTML = '<ul>' +
-     
-      '<li>  backpackers details</li>'+
-      '</ul>';
-  }
+
+
+  // Start of new input
+
+
   if (package === 'Bootcamp') {
-    detailsElement.innerHTML = '<ul>' +
+    detailsElement.innerHTML = package +'<ul>' +
      
       '<li>  Bootcamp details</li>'+
       '</ul>';
   }
-  if (package === 'Digital Nomads') {
-    detailsElement.innerHTML = '<ul>' +
+ // if (package === 'Digital Nomads') {
+   // detailsElement.innerHTML = '<ul>' +
      
-      '<li>  Digital Nomads details</li>'+
+    //  '<li>  Digital Nomads details</li>'+
+  ////    '</ul>';
+ // }
+  if (package === 'Accommodations Only-Deluxe') {
+    detailsElement.innerHTML = 'Deluxe Room Accommodation for 1-2 pax includes: '+'<ul>' +
+     
+      '<li> Free use of the gym</li>'+
+        '<li> Free breakfast for 1-2 pax</li>'+
+          '<li> Pool access</li>'+
+            '<li> Free WiFi (Starlink)</li>'+
+              '<li> Training and classes are not included.  Extra pax (adult or child) are an additional fee.</li>'+
+
+     '</ul>';
+
+  } 
+  if (package === 'Accommodations Only-Villa') {
+    detailsElement.innerHTML =  'Villa Accommodation for 1-4 pax includes:'+'<ul>' +
+     
+      '<li> Free use of the gym</li>'+
+      '<li> Free breakfast for 1-4 pax</li>'+
+      '<li> Pool access</li>'+
+      '<li> Free WiFi (Starlink)</li>'+
+      '<li> Training and classes are not included.  Extra pax (adult or child) are an additional fee.</li>'+
+     '</ul>';
+
+  } 
+
+
+  if (package === 'Backpacker Special') {
+    detailsElement.innerHTML = package +'<ul>' +
+     
+      '<li> Door Room Bed</li>'+
+      '<li> Full Gym Access</li>'+
+      '<li> All Daily Training Classes</li>'+
+      '<li> Pool Access (Long stay)</li>'+
+      '<li> Breakfast included</li>'+
+      '<li> Hot and Cold shower</li>'+
+      '<li> Airconditioned Room</li>'+
+      '<li> High Speed Starlink Internet</li>'+
       '</ul>';
   }
-  if (package === 'accommodations') {
-    detailsElement.innerHTML = '<ul>' +
-     
-      '<li>  Accommodations details</li>'+
-      '</ul>';
-  } else if (package === 'All Inclusive Fitness Package' && roomType === 'Deluxe Room') {
-    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
-      '<li> Free use of the gym and equipment any time</li>' +
-      '<li> A private lesson—one hour every week, with the trainer of your choice</li>' +
-      '<li>Deluxe accommodation with a/c and en suite bathroom</li>' +
-      '<li> Swimming pool access (when pool is finished being constructed)</li>' +
-      '<li> Three meals a day (Sunday included)</li>' +
-      '<li> Five bottles of water, daily (1.5 lt)</li>' +
-      '<li> A one hour massage, once per week</li>' +
-      '<li> One-time body composition analysis with our InBody270 scale</li>' +
-      '<li> Fight Club Philippines T-shirt</li>' +
-      '</ul>';
 
-
-  } else if (package === 'All Inclusive Fitness Package' && roomType === 'Executive Villa') {
-    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
-      '<li>  Free use of the gym and equipment any time</li>' +
-      '<li> Three private lessons—one hour every week, with the trainer of your choice</li>' +
-      '<li>  Deluxe accommodation with a/c and en suite bathroom</li>' +
-      '<li>  Swimming pool access (when pool is finished being constructed)</li>' +
-      '<li>  Three meals a day (Sunday included)</li>' +
-      '<li>  Five bottles of water, daily (1.5 lt)</li>' +
-      '<li> One 1 hour massage, once per week</li>' +
-      '<li>  Weekly body composition analysis with our InBody270 scale</li>' +  
-      '<li>  Fight Club Philippines T-shirt</li>' +
-      '</ul>';
-
-  } 
-
-  else if (package === 'All Inclusive Weight-Loss Package' && roomType === 'Deluxe Room') {
-    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
-    
-      '<li> Free use of the gym and equipment any time</li>'+
-      '<li>A private lesson—one hour every week, with the trainer of your choice</li>'+
-      '<li>Deluxe accommodation with a/c and en suite bathroom</li>'+
-      '<li>Swimming pool access (when pool is finished being constructed)</li>'+
-      '<li>Three “diet” meals a day (Sunday included)</li>'+
-      '<li>Five bottles of water, daily (1.5 lt)</li>'+
-      '<li> A one hour massage, once per week</li>'+
-      '<li>Weekly body composition analysis with our InBody270 scale</li>'+
-      '<li> Before and after picture (from four weeks stay)</li>'+
-      '<li>Fight Club Philippines T-shirt</li>' +
-      '</ul>';
-
-  } else if (package === 'All Inclusive Weight-Loss Package' && roomType === 'Executive Villa') {
-    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
-   
-      '<li>Free use of the gym and equipment any time</li>'+
-      '<li>Three private lessons—one hour every week, with the trainer of your choice</li>'+
-      '<li> Deluxe accommodation with a/c and en suite bathroom</li>'+
-      '<li>Swimming pool access (when pool is finished being constructed)</li>'+
-      '<li>Three “diet” meals a day (Sunday included)</li>'+
-      '<li>Five bottles of water, daily (1.5 lt)</li>'+
-      '<li> One 1 hour massage, once per week</li>'+
-      '<li> Weekly body composition analysis with our InBody270 scale</li>'+
-      '<li>Before and after picture (from four weeks stay)</li>'+
-      '<li> Fight Club Philippines T-shirt, boxing gloves, and hand wraps+</li>'+
-      '</ul>';
-
-  } else if (package === 'All Inclusive Training Package' && roomType === 'Deluxe Room') {
-    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
-   
-      '<li> Free use of the gym and equipment any time</li>'+
-      '<li> A private lesson—one hour every week, with the trainer of your choice</li>'+
-      '<li> Deluxe accommodation with a/c and en suite bathroom</li>'+
-      '<li> Swimming pool access (when pool is finished being constructed)</li>'+
-      '<li> Three meals a day (Sunday included)</li>'+
-      '<li> Daily supplement (2 protein shakes, BCAA, Creatine and multivitamin)</li>'+
-      '<li> Five bottles of water, daily (1.5 lt)</li>'+
-      '<li> A one hour massage, once per week</li>'+
-      '<li> One-time body composition analysis with our InBody270 scale</li>'+
-      '<li> Fight Club Philippines T-shirt</li>'+
-      '</ul>';
-
-  } else if (package === 'All Inclusive Training Package' && roomType === 'Executive Villa') {
-    detailsElement.innerHTML = package + ' at '+roomType+ '<ul>' +
-     
+  if (package === 'All Inclusive Weight Management Program-Deluxe') {
+    detailsElement.innerHTML =  'All-Inclusive<strong> Weight Management Program </strong>for 1 pax includes: '+'<ul>' +
+          
+      '<li>   Unlimited group training per the schedule for combat sports and functional training</li>'+
+      '<li>   Free use of the gym and equipment any time</li>'+
+      '<li>   Accommodation in a Deluxe Room</li>'+
+      '<li>   Swimming pool access</li>'+
+      '<li>   Three meals a day (Sunday included)</li>'+
+      '<li>   Unlimited dispenser water</li>'+
+      '<li>   One 1 hour massage, once per week</li>'+
+      '<li>   Weekly body composition analysis with our InBody270 scale</li>'+
+      '<li>   Free airport transfer</li>'+
+      '<li>   1 private weekly lesson</li>'+
+      '<li>   Custom meal plan designed to meet caloric and macronutrient goals</li>'+
+      '<li>   1 child (4-12yo) is included free of charge</li>'+
+      '<li>   FCP t-shirt</li>'+
+      '<br> Extra pax (adult or child) are not included   '+
+       '</ul>';
+  }
+  
+  
+  if (package === 'All-Inclusive VIP Weight Management Program-Villa') {
+    detailsElement.innerHTML =  'All-Inclusive <strong>VIP Weight Management Program </strong> for 1 pax includes: '+'<ul>' +
+          
+      '<li>  Unlimited group training per the schedule for combat sports and functional training</li>'+
       '<li>  Free use of the gym and equipment any time</li>'+
-      '<li> Three private lessons—one hour every week, with the trainer of your choice</li>'+
-      '<li>  Deluxe accommodation with a/c and en suite bathroom</li>'+
-      '<li>  Swimming pool access (when pool is finished being constructed)</li>'+
+      '<li>  Accommodation in one of our spacious Executive Villas</li>'+
+      '<li>  Swimming pool access</li>'+
       '<li>  Three meals a day (Sunday included)</li>'+
-      '<li>  Daily supplement (2 protein shakes, BCAA, Creatine and multivitamin)</li>'+
-      '<li> Five bottles of water, daily (1.5 lt)</li>'+
+      '<li>  Unlimited dispenser water</li>'+
       '<li>  One 1 hour massage, once per week</li>'+
       '<li>  Weekly body composition analysis with our InBody270 scale</li>'+
-      '<li>  Fight Club Philippines T-shirt</li>'+
-      '</ul>';
+      '<li>  Free airport transfer</li>'+
+      '<li>  Daily protein shake!</li>'+
+      '<li>  3 private weekly lesson</li>'+
+      '<li>  Custom meal plan designed to meet caloric and macronutrient goals</li>'+
+      '<li>  1 child (4-12yo) is included free of charge</li>'+
+      '<li>  FCP t-shirt, gloves, and hand wraps</li>'+
+      '<br> Extra pax (adult or child) are not included   '+
+       '</ul>';
+  }
+  
+  if (package === 'All-Inclusive Combat Sports Training Program-Deluxe') {
+    detailsElement.innerHTML = 'All-Inclusive <strong>Combat Sports Training </strong> Program for 1 pax includes:'+'<ul>' +
+
+    '<li> Unlimited group training per the schedule for combat sports and functional training</li>'+
+    '<li> Free use of the gym and equipment any time    </li>'+
+    '<li> Accommodation in a Deluxe Room     </li>'+
+    '<li> Swimming pool access    </li>'+
+    '<li> Three meals a day (Sunday included)    </li>'+
+    '<li> Unlimited dispenser water    </li>'+
+    '<li> One 1 hour massage, once per week    </li>'+
+    '<li> Weekly body composition analysis with our InBody270 scale   </li>'+  
+    '<li> Free airport transfer    </li>'+
+    '<li> 1 private weekly lesson      </li>'+
+    '<li> 1 child (4-12yo) is included free of charge  </li>'+   
+    '<li> FCP t-shirt      </li>'+
+ '<br> Extra pax (adult or child) are not included   '+
+    '</ul>';
   } 
+
+  if (package === 'All-Inclusive VIP Combat Sports Training Program-Villa') {
+    detailsElement.innerHTML = 'All-Inclusive<strong> VIP Combat Sports Training Program</strong> for 1 pax includes:'+'<ul>' +
+     
+      
+        '<li> Unlimited group training per the schedule for combat sports and functional training</li>'+
+        '<li> Free use of the gym and equipment any time</li>'+
+        '<li> Accommodation in one of our spacious Executive Villas </li>'+
+        '<li> Swimming pool access</li>'+
+        '<li> Three meals a day (Sunday included)</li>'+
+        '<li> Unlimited dispenser water</li>'+
+        '<li> One 1 hour massage, once per week</li>'+
+        '<li> Weekly body composition analysis with our InBody270 scale</li>'+
+        '<li> Free airport transfer </li>'+
+        '<li> 3 private weekly lessons</li>'+
+        '<li> Daily protein shake!</li>'+
+        '<li> 1-2 children (4-12yo) are included free of charge</li>'+
+        '<li> FCP t-shirt, gloves, and hand wraps</li>'+
+        '<br> Extra pax (adult or child) are not included   '+
+       '</ul>';
+  }
+  
+  if (package === 'All Inclusive Fitness Package-Deluxe') {
+    detailsElement.innerHTML = 'All-Inclusive <strong> Fitness Program </strong> for 1 pax includes:'+'<ul>' +
+
+          '<li> Unlimited group training per the schedule for functional training ********only********</li>'+
+          '<li> Free use of the gym and equipment any time</li>'+
+          '<li> Accommodation in a Deluxe Room</li>'+
+          '<li> Swimming pool access</li>'+
+          '<li> Three meals a day (Sunday included)</li>'+
+          '<li> Unlimited dispenser water</li>'+
+          '<li> One 1 hour massage, once per week</li>'+
+          '<li> Weekly body composition analysis with our InBody270 scale</li>'+
+          '<li> Free airport transfer</li>'+
+          '<li> 1 private training session per week</li>'+
+          '<li> 1 child (4-12yo) is included free of charge</li>'+
+          '<li> FCP t-shirt</li>'+
+          '<br> Extra pax (adult or child) are not included   '+
+       '</ul>';
+  } 
+
+
+   
+  if (package === 'All-Inclusive VIP Fitness Program-Villa') {
+    detailsElement.innerHTML = 'All-Inclusive <strong> VIP Fitness Program </strong> for 1 pax includes:'+'<ul>' +
+            
+         '<li> Unlimited group training per the schedule for functional training ********only********</li>'+
+         '<li> Free use of the gym and equipment any time</li>'+
+         '<li> Accommodation in one of our spacious Executive Villas</li>'+
+         '<li> Swimming pool access</li>'+
+         '<li> Three meals a day (Sunday included)</li>'+
+         '<li> Unlimited dispenser water</li>'+
+         '<li> One 1 hour massage, once per week</li>'+
+         '<li> Weekly body composition analysis with our InBody270 scale</li>'+
+         '<li> Free airport transfer</li>'+
+         '<li> 3 private training sessions per week</li>'+
+         '<li> Daily protein shake!</li>'+
+         '<li> 1-2 children (4-12yo) are included free of charge</li>'+
+         '<li> FCP t-shirt, gloves, and hand wraps</li>'+
+         '<br> Extra pax (adult or child) are not included   '+
+       '</ul>';
+  }
+
+// End of new input
+
 }
 
 function openModal() {
@@ -729,8 +912,9 @@ function openModal() {
   var numPeople = document.getElementById('numPeople').value;
   var numChild = document.getElementById('numChild').value;
 
-  var roomType = document.getElementById('roomType').value;
-document.getElementById('confirmRoomType').textContent = roomType;
+  const roomType = document.getElementById('roomType').value;
+//document.getElementById('confirmRoomType').textContent = roomType; temporary
+
       //document.getElementById("modal").style.display = "block";
       // Set the selected inputs in the pop-up
     //  document.getElementById("confirmPackage").innerText = document.getElementById("package").value;
@@ -747,15 +931,15 @@ document.getElementById('confirmRoomType').textContent = roomType;
       var checkOutDate = document.getElementById('checkOutDate').value;
       document.getElementById('confirmCheckOutDate').textContent = checkOutDate;
 
-      var promoCode = document.getElementById('promo-code-input').value;
+      var promoCode = document.getElementById('promoCodeInput').value;
       document.getElementById('confirmPromoCode').textContent = promoCode;
  
      // var package = document.getElementById('confirmPackage').value;
-      document.getElementById("confirmPackage").innerText = document.getElementById("package").value;
-      var package = document.getElementById('bookingForm').elements['package'].value;
+     // document.getElementById("confirmPackage").innerText = document.getElementById("package").value;
+      const package = document.getElementById('bookingForm').elements['package'].value;
 
       
-
+      
 
       var missingFields = [];
 
@@ -788,14 +972,77 @@ if (missingFields.length > 0) {
 
 function resetForm() {
   document.getElementById('bookingForm').reset();
-  document.getElementById('totalPrice').textContent = ''; // Clear the estimate cost
+  document.getElementById('total-price').textContent = '';
+  document.getElementById('num-of-days').textContent = ''; 
+  document.getElementById('pricePerDay').textContent = '';  // Clear the estimate cost
 }
+
+
 
 
     function openConfirmationModal() {
-  var modal = document.getElementById('confirmationModal');
+
+      var modal = document.getElementById('confirmationModal');
+      const packageSelected = document.getElementById('bookingForm').elements['package'].value;
+      const roomType = document.getElementById('roomType').value;
+      const totalPrice = document.getElementById('total-price').textContent;
+      const checkInDate = document.getElementById('checkInDate').value;
+      const checkOutDate = document.getElementById('checkOutDate').value;
+      const promoCode1 = document.getElementById('promoCodeInput').value;
+      const numChild1 = document.getElementById('numChild').value;
+      const numPeople1 = document.getElementById('numPeople').value;
+     
+     // const packageSelected = package.options[package.selectedIndex].text;
+     // const roomSelected = roomType.options[roomType.selectedIndex].text;
+
+ 
+  const bookingDetails = document.getElementById('bookingDetails');
+  bookingDetails.innerHTML = '';
+  
+ 
+  
+  const packageParagraph = document.createElement('p');
+  packageParagraph.innerHTML = `<strong>Package:</strong> ${packageSelected}`;
+  bookingDetails.appendChild(packageParagraph);
+
+ 
+  const checkParagraph = document.createElement('p');
+  checkParagraph.innerHTML = `<strong>Check-In Date:</strong> ${checkInDate}`;
+  bookingDetails.appendChild(checkParagraph);
+
+  const checkOutParagraph = document.createElement('p');
+  checkOutParagraph.innerHTML = `<strong>Check-Out Date:</strong> ${checkOutDate}`;
+  bookingDetails.appendChild(checkOutParagraph);
+
+
+  if (numChild.value !== '0') {
+    const numChildParagraph = document.createElement('p');
+    numChildParagraph.innerHTML = `<strong>Additional Child:</strong> ${numChild1}`;
+    bookingDetails.appendChild(numChildParagraph);
+  } 
+  if (numPeople.value !== '0') {
+    const numPeopleParagraph = document.createElement('p');
+    numPeopleParagraph.innerHTML = `<strong>Additional Adult:</strong> ${numPeople1}`;
+    bookingDetails.appendChild(numPeopleParagraph);
+  }
+
+  const totalParagraph = document.createElement('p');
+  totalParagraph.innerHTML = `<strong>Total Price:</strong> ${totalPrice}`;
+  bookingDetails.appendChild(totalParagraph); 
+
+ 
+
+  if (promoCodeInput.value !== '') {
+  const promoParagraph = document.createElement('p');
+  promoParagraph.innerHTML = `<strong>Promo code:</strong> ${promoCode1}`;
+  bookingDetails.appendChild(promoParagraph);
+}
+
+ 
   modal.style.display = 'block';
 }
+
+
 
 function closeConfirmationModal() {
   var modal = document.getElementById('confirmationModal');
@@ -814,15 +1061,15 @@ function sendBookingInfoToAirtable(firstName, lastName, email, message) {
   };
 
  
-      var package = document.getElementById('confirmPackage').textContent;
+      var package = document.getElementById('package').value;
       var stayDuration = document.getElementById('confirmStayDuration').textContent;
       var numPeople = document.getElementById('confirmNumPeople').textContent;
       var numChild = document.getElementById('confirmNumChild').textContent;
       var totalPrice = document.getElementById('confirmTotalPrice').textContent;
       var checkInDate = document.getElementById('confirmCheckInDate').textContent;
       var checkOutDate = document.getElementById('confirmCheckOutDate').textContent;
-      var roomType = document.getElementById('confirmRoomType').textContent;
-      var promoCode = document.getElementById('confirmPromoCode').textContent;
+     var roomType = document.getElementById('roomType').value;
+      var promoCode = document.getElementById('promoCodeInput').value;
 
       var data = {
         "fields": {
@@ -837,8 +1084,9 @@ function sendBookingInfoToAirtable(firstName, lastName, email, message) {
           "Check-In Date": checkInDate,
           "Check-Out Date": checkOutDate,
           "Status": 'Pending',
-          "Room Type": roomType,
-          "Promo Code": promoCode          
+          "Promo Code":promoCode,  
+         "Room Type": roomType
+               
 
          
         }
